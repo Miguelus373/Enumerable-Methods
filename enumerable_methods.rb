@@ -50,10 +50,9 @@ module Enumerable
           item = self[i]
           if yield(item)
             new_arr.push(item)
-            puts 'ok'
           end
         end
-        p new_arr
+        new_arr
       else 
         new_hash = {}
         for i in 0...(self.length)
@@ -63,11 +62,23 @@ module Enumerable
             new_hash.store(key[i], value[i])
           end
         end
-        puts new_hash
+        new_hash
       end
     end
   end # Third method ends here
 
+  def my_all #Fourth method
+    unless block_given?
+      return true
+    else
+      for i in 0...(self.length)
+        unless yield(self[i])
+          return false
+        end
+      end
+      return true
+    end
+  end # Fourth method ends here
 end
 
-other_hash.my_select {|i, j| i.length > 8}
+puts array.my_all {|i| i > 5}
