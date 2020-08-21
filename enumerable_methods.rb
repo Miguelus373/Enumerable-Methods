@@ -47,15 +47,27 @@ module Enumerable
       new_arr = []
       if self.is_a? Array
         for i in 0...(self.length)
-          if yield(self.my_each {|i| return i})
-            new_arr.push(i)
-            p "ok"
+          item = self[i]
+          if yield(item)
+            new_arr.push(item)
+            puts 'ok'
           end
         end
         p new_arr
+      else 
+        new_hash = {}
+        for i in 0...(self.length)
+          key = self.keys
+          value = self.values
+          if yield(key, value)
+            new_hash.store(key,value)
+          end
+        end
+        puts new_hash
       end
     end
   end # Third method ends here
+
 end
 
 array.my_select {|num| puts num > 3 }
