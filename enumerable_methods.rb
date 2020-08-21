@@ -57,10 +57,10 @@ module Enumerable
       else 
         new_hash = {}
         for i in 0...(self.length)
-          key = self.keys
-          value = self.values
-          if yield(key, value)
-            new_hash.store(key,value)
+        key = self.keys
+        value = self.values
+          if yield(key[i], value[i])
+            new_hash.store(key[i], value[i])
           end
         end
         puts new_hash
@@ -70,4 +70,4 @@ module Enumerable
 
 end
 
-array.my_select {|num| puts num > 3 }
+other_hash.my_select {|i, j| i.length > 8}
