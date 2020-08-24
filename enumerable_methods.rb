@@ -1,237 +1,234 @@
-# rubocop:disable Style/CaseEquality
-array = [1.0,2,3,4,5,6,7,8,9]
-hash = {one: 1, two: 2, three: 3}
-other_array = ["Testing", "how", "this", "array", "thing", "works", "Happiness", "how", "how", "how", "how", "how"]
-other_hash = {desperation: 1, testing: 2, achieving: 3, figuring_out: 4}
-ma_string = "somethig different"
+array = [1.0, 2, 3, 4, 5, 6, 7, 8, 9]
+hash = { one: 1, two: 2, three: 3 }
+other_array = %w[Testing how this array thing works Happiness how how how how how]
+other_hash = { desperation: 1, testing: 2, achieving: 3, figuring_out: 4 }
+ma_string = 'somethig different'
 
 module Enumerable
-  def my_each #First method
-    unless block_given?
-      return puts 'Enumerator #{self}:my_each'
-    else
-      if self.is_a? Array
-        for i in 0...(self.length)
+  # 1st method
+  def my_each
+    if block_given?
+      if is_a? Array
+        (0...(length)).each do |i|
           yield(self[i])
         end
       else
-        for i in 0...(self.length)
-          hash = self.to_a
+        (0...(length)).each do |i|
+          hash = to_a
           yield(hash[i])
         end
       end
-    end
-  end #First method ends here
-
-  def my_each_with_index #Second Method
-    unless block_given?
-      return puts "Enumerator #{self}:my_each_with_index"
     else
-      if self.is_a? Array
-        for j in 0...(self.length)
+      puts "Enumerator #{self}:my_each"
+    end
+  end
+  # 1st method ends here
+
+  # 2nd Method
+  def my_each_with_index
+    if block_given?
+      if is_a? Array
+        (0...(length)).each do |j|
           i = self[j]
           yield(i, j)
         end
       else
-        for j in 0...(self.length)
-          hash = self.to_a
+        (0...(length)).each do |j|
+          hash = to_a
           yield(hash[j], j)
         end
       end
-    end
-  end #Second Method ends here
-
-  def my_select #Third method
-    unless block_given?
-      return puts "Enumerator #{self}:my_select"
     else
+      puts "Enumerator #{self}:my_each_with_index"
+    end
+  end
+  # 2nd Method ends here
+
+  # 3rd method
+  def my_select
+    if block_given?
       new_arr = []
-      if self.is_a? Array
-        for i in 0...(self.length)
+      if is_a? Array
+        (0...(length)).each do |i|
           item = self[i]
-          if yield(item)
-            new_arr.push(item)
-          end
+          new_arr.push(item) if yield(item)
         end
         new_arr
-      else 
+      else
         new_hash = {}
-        key = self.keys
-        value = self.values
-        for i in 0...(self.length)
-          if yield(key[i], value[i])
-            new_hash.store(key[i], value[i])
-          end
+        key = keys
+        value = values
+        (0...(length)).each do |i|
+          new_hash.store(key[i], value[i]) if yield(key[i], value[i])
         end
         new_hash
       end
-    end
-  end #Third method ends here
-
-  def my_all? #Fourth method
-    if !block_given?
-      return true
-    elsif self.is_a? Array
-      for i in 0...(self.length)
-        unless yield(self[i])
-          return false
-        end
-      end
-      return true
-    else 
-      key = self.keys
-      value = self.values
-      for i in 0...(self.length)
-        unless yield(key[i], value[i])
-          return false
-        end
-      end
-      return true
-    end
-  end #Fourth method ends here
-
-  def my_any? #Fifth method
-    if !block_given?
-      return true
-    elsif self.is_a? Array
-      for i in 0...(self.length)
-        if yield(self[i])
-          return true
-        end
-      end
-      return false
-    else 
-      key = self.keys
-      value = self.values
-      for i in 0...(self.length)
-        if yield(key[i], value[i])
-          return true
-        end
-      end
-      return false
-    end
-  end #Fifth method ends here
-
-  def my_none? #Sixth method
-    if !block_given? 
-      return false
-    elsif self.is_a? Array
-      for i in 0...(self.length)
-        if yield(self[i])
-          return false
-        end
-      end
-      return true
-    else 
-      key = self.keys
-      value = self.values
-      for i in 0...(self.length)
-        if yield(key[i], value[i])
-          return false
-        end
-      end
-      return true
-    end
-  end #Sixth method ends here
-
-  def my_count(compare = 'none') #Seventh method 
-    if !block_given? && compare == 'none'
-      return puts self.length
-    end 
-      count = 0
-
-      unless compare == 'none'
-        puts 'warning: given block not used'
-        for i in 0...(self.length)
-          if compare == self[i]
-            count += 1
-          end 
-        end
-      else
-        for i in 0...(self.length)
-          if yield(self[i])
-            count += 1
-          end 
-        end
-      end
-      
-    puts count
-  end #Seventh method ends here
-
-=begin  
-  def my_map #Eighth method
-    unless block_given?
-      return puts 'Enumerator #{self}:my_map'
     else
-      new_arr = []
-      if self.is_a? Array
-        for i in 0...(self.length)
-            new_arr.push(yield(self[i]))
-        end
-      elsif self.is_a? Hash
-        key = self.keys
-        value = self.values
-        for i in 0...(self.length)
-          yield(key[i], value[i])
-          new_arr.push(yield(key[i], value[i]))
-        end
-      end
-      new_arr
-     end
+      puts "Enumerator #{self}:my_select"
+    end
   end
-=end
+  # 3rd method ends here
 
-  def my_inject(num = 'none') #9th method
+  # 4th method
+  def my_all?
+    if !block_given?
+      true
+    elsif is_a? Array
+      (0...(length)).each do |i|
+        return false unless yield(self[i])
+      end
+      true
+    else
+      key = keys
+      value = values
+      (0...(length)).each do |i|
+        return false unless yield(key[i], value[i])
+      end
+      true
+    end
+  end
+  # 4th method ends here
+
+  # 5th method
+  def my_any?
+    if !block_given?
+      true
+    elsif is_a? Array
+      (0...(length)).each do |i|
+        return true if yield(self[i])
+      end
+      false
+    else
+      key = keys
+      value = values
+      (0...(length)).each do |i|
+        return true if yield(key[i], value[i])
+      end
+      false
+    end
+  end
+  # 5th method ends here
+
+  # 6th method
+  # 6th method
+  def my_none?
+    if !block_given?
+      false
+    elsif is_a? Array
+      (0...(length)).each do |i|
+        return false if yield(self[i])
+      end
+      true
+    else
+      key = keys
+      value = values
+      (0...(length)).each do |i|
+        return false if yield(key[i], value[i])
+      end
+      true
+    end
+  end
+  # 6th method ends here
+
+  # 7th method
+  # 7th method
+  def my_count(compare = 'none')
+    return puts length if !block_given? && compare == 'none'
+
+    count = 0
+
+    if compare == 'none'
+      (0...(length)).each do |i|
+        count += 1 if yield(self[i])
+      end
+    else
+      puts 'warning: given block not used'
+      (0...(length)).each do |i|
+        count += 1 if compare == self[i]
+      end
+    end
+
+    count
+  end
+  # 7th method ends here
+
+  # 8th method
+
+  #   def my_map
+  #     unless block_given?
+  #       return puts 'Enumerator #{self}:my_map'
+  #     else
+  #       new_arr = []
+  #       if self.is_a? Array
+  #         for i in 0...(self.length)
+  #             new_arr.push(yield(self[i]))
+  #         end
+  #       elsif self.is_a? Hash
+  #         key = self.keys
+  #         value = self.values
+  #         for i in 0...(self.length)
+  #           yield(key[i], value[i])
+  #           new_arr.push(yield(key[i], value[i]))
+  #         end
+  #       end
+  #       new_arr
+  #      end
+  #   end
+
+  # 9th method
+  def my_inject(num = 'none')
     if num == 'none'
       injection = self[0]
-      for i in 1...self.length
+      (1...length).each do |i|
         injection = yield(injection, self[i])
       end
       injection
     else
-        injection = num
-      for i in 0...self.length
+      injection = num
+      (0...length).each do |i|
         injection = yield(injection, self[i])
       end
       injection
     end
-  end #9th method ends here
-
-  def multiply_els #10th method
-      self.my_inject{|i, j| i * j}
-  end #10th method ends here
-
-=begin
-  def my_map(parameter) #my_map modified for Proc
-      new_arr = []
-      if self.is_a? Array
-        for i in 0...(self.length)
-          new_arr.push(parameter[self[i]])
-        end
-      elsif self.is_a? Hash
-        key = self.keys
-        value = self.values
-        for i in 0...(self.length)
-          new_arr.push(parameter[key[i], value[i]])
-        end
-      end
-      new_arr
   end
-=end
+  # 9th method ends here
 
-  def my_map(parameter = 'none') #my_map modified for Proc or block
-    if parameter == 'none' && !block_given?
-      return puts 'Enumerator #{self}:my_map'
-    elsif parameter == 'none'
+  # 10th method
+  def multiply_els
+    my_inject { |i, j| i * j }
+  end
+  # 10th method ends here
+
+  #   def my_map(parameter) #my_map modified for Proc
+  #       new_arr = []
+  #       if self.is_a? Array
+  #         for i in 0...(self.length)
+  #           new_arr.push(parameter[self[i]])
+  #         end
+  #       elsif self.is_a? Hash
+  #         key = self.keys
+  #         value = self.values
+  #         for i in 0...(self.length)
+  #           new_arr.push(parameter[key[i], value[i]])
+  #         end
+  #       end
+  #       new_arr
+  #   end
+
+  # my_map modified for Proc or block
+  def my_map(par = 'none')
+    if par == 'none' && !block_given?
+      puts "Enumerator #{self}:my_map"
+    elsif par == 'none'
       new_arr = []
-      if self.is_a? Array
-        for i in 0...(self.length)
-            new_arr.push(yield(self[i]))
+      if is_a? Array
+        (0...(length)).each do |i|
+          new_arr.push(yield(self[i]))
         end
-      elsif self.is_a? Hash
-        key = self.keys
-        value = self.values
-        for i in 0...(self.length)
+      elsif is_a? Hash
+        key = keys
+        value = values
+        (0...(length)).each do |i|
           yield(key[i], value[i])
           new_arr.push(yield(key[i], value[i]))
         end
@@ -239,15 +236,15 @@ module Enumerable
       new_arr
     else
       new_arr = []
-      if self.is_a? Array
-        for i in 0...(self.length)
-          new_arr.push(parameter[self[i]])
+      if is_a? Array
+        (0...(length)).each do |i|
+          new_arr.push(par[self[i]])
         end
-      elsif self.is_a? Hash
-        key = self.keys
-        value = self.values
-        for i in 0...(self.length)
-          new_arr.push(parameter[key[i], value[i]])
+      elsif is_a? Hash
+        key = keys
+        value = values
+        (0...(length)).each do |i|
+          new_arr.push(par[key[i], value[i]])
         end
       end
       new_arr
@@ -255,5 +252,13 @@ module Enumerable
   end
 end
 
-my_proc = Proc.new  {|thing| thing*2}
-puts array.my_map 
+# array.my_each
+# array.my_each_with_index
+# array.my_select
+# p array.my_all?
+# p array.my_any?
+# p array.my_none?
+# array.my_count
+# array.my_inject
+# array.my_map
+# array.inject
