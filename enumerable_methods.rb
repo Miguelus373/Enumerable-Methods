@@ -158,6 +158,7 @@ module Enumerable
     puts count
   end #Seventh method ends here
 
+=begin  
   def my_map #Eighth method
     unless block_given?
       return puts 'Enumerator #{self}:my_map'
@@ -178,8 +179,9 @@ module Enumerable
       new_arr
      end
   end
+=end
 
-  def my_inject(num = 'none')
+  def my_inject(num = 'none') #9th method
     if num == 'none'
       injection = self[0]
       for i in 1...self.length
@@ -193,8 +195,65 @@ module Enumerable
       end
       injection
     end
+  end #9th method ends here
+
+  def multiply_els #10th method
+      self.my_inject{|i, j| i * j}
+  end #10th method ends here
+
+=begin
+  def my_map(parameter) #my_map modified for Proc
+      new_arr = []
+      if self.is_a? Array
+        for i in 0...(self.length)
+          new_arr.push(parameter[self[i]])
+        end
+      elsif self.is_a? Hash
+        key = self.keys
+        value = self.values
+        for i in 0...(self.length)
+          new_arr.push(parameter[key[i], value[i]])
+        end
+      end
+      new_arr
+  end
+=end
+
+  def my_map(parameter = 'none') #my_map modified for Proc or block
+    if parameter == 'none' && !block_given?
+      return puts 'Enumerator #{self}:my_map'
+    elsif parameter == 'none'
+      new_arr = []
+      if self.is_a? Array
+        for i in 0...(self.length)
+            new_arr.push(yield(self[i]))
+        end
+      elsif self.is_a? Hash
+        key = self.keys
+        value = self.values
+        for i in 0...(self.length)
+          yield(key[i], value[i])
+          new_arr.push(yield(key[i], value[i]))
+        end
+      end
+      new_arr
+    else
+      new_arr = []
+      if self.is_a? Array
+        for i in 0...(self.length)
+          new_arr.push(parameter[self[i]])
+        end
+      elsif self.is_a? Hash
+        key = self.keys
+        value = self.values
+        for i in 0...(self.length)
+          new_arr.push(parameter[key[i], value[i]])
+        end
+      end
+      new_arr
+    end
   end
 end
 
-p array.my_inject() {|i,j| i + j}
-#puts array.inject(15) {|i,j| i + j}
+my_proc = Proc.new  {|thing| thing*2}
+puts array.my_map 
