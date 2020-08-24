@@ -1,8 +1,9 @@
 # rubocop:disable Style/CaseEquality
 array = [1,2,3,4,5,6,7,8,9]
 hash = {one: 1, two: 2, three: 3}
-other_array = ["Testing", "how", "this", "array", "thing", "works", "Happiness"]
+other_array = ["Testing", "how", "this", "array", "thing", "works", "Happiness", "how", "how", "how", "how", "how"]
 other_hash = {desperation: 1, testing: 2, achieving: 3, figuring_out: 4}
+ma_string = "enumerable"
 
 module Enumerable
   def my_each #First method
@@ -133,9 +134,29 @@ module Enumerable
     end
   end #Sixth method ends here
 
-  def my_count #Seventh method  
-    if !block_given?
-      return self.length 
-    end
+  def my_count(r) #Seventh method  
+      count = 0
+      if self.is_a? Array
+        for i in 0...(self.length)
+          puts "iteration number #{self[i]}" 
+          puts "It's definitely taking this index: #{r}"
+          if r == self[i]
+            count += 1
+            puts "It's counting #{count}"
+          end 
+        end
+      elsif self.is_a? String
+        for i in 0...(self.length)
+          if r == self[i]
+            count += 1
+            puts "It's counting #{count}"
+          end
+        end  
+      end
+      puts count 
   end #Seventh method ends here
+
 end
+
+
+ma_string.my_count("e")
