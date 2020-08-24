@@ -157,6 +157,29 @@ module Enumerable
       
     puts count
   end #Seventh method ends here
+
+  def my_map #Eighth method
+    unless block_given?
+      return puts 'Enumerator #{self}:my_map'
+    else
+      new_arr = []
+      if self.is_a? Array
+        for i in 0...(self.length)
+            new_arr.push(yield(self[i]))
+        end
+      elsif self.is_a? Hash
+        key = self.keys
+        value = self.values
+        for i in 0...(self.length)
+          yield(key[i], value[i])
+          new_arr.push(yield(key[i], value[i]))
+        end
+      end
+      new_arr
+     end
+  end
 end
 
-other_array.my_count() {|i| i.length > 3}
+
+p hash.my_map {|i, j| i.to_s + "yeah"}
+#p hash.map {|i, j| j + 2}
