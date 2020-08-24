@@ -1,5 +1,5 @@
 # rubocop:disable Style/CaseEquality
-array = [1,2,3,4,5,6,7,8,9]
+array = [1.0,2,3,4,5,6,7,8,9]
 hash = {one: 1, two: 2, three: 3}
 other_array = ["Testing", "how", "this", "array", "thing", "works", "Happiness", "how", "how", "how", "how", "how"]
 other_hash = {desperation: 1, testing: 2, achieving: 3, figuring_out: 4}
@@ -178,8 +178,23 @@ module Enumerable
       new_arr
      end
   end
+
+  def my_inject(num = 'none')
+    if num == 'none'
+      injection = self[0]
+      for i in 1...self.length
+        injection = yield(injection, self[i])
+      end
+      injection
+    else
+        injection = num
+      for i in 0...self.length
+        injection = yield(injection, self[i])
+      end
+      injection
+    end
+  end
 end
 
-
-p hash.my_map {|i, j| i.to_s + "yeah"}
-#p hash.map {|i, j| j + 2}
+p array.my_inject() {|i,j| i + j}
+#puts array.inject(15) {|i,j| i + j}
