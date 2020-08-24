@@ -3,7 +3,7 @@ array = [1,2,3,4,5,6,7,8,9]
 hash = {one: 1, two: 2, three: 3}
 other_array = ["Testing", "how", "this", "array", "thing", "works", "Happiness", "how", "how", "how", "how", "how"]
 other_hash = {desperation: 1, testing: 2, achieving: 3, figuring_out: 4}
-ma_string = "enumerable"
+ma_string = "somethig different"
 
 module Enumerable
   def my_each #First method
@@ -134,29 +134,29 @@ module Enumerable
     end
   end #Sixth method ends here
 
-  def my_count(r) #Seventh method  
+  def my_count(compare = 'none') #Seventh method 
+    if !block_given? && compare == 'none'
+      return puts self.length
+    end 
       count = 0
-      if self.is_a? Array
+
+      unless compare == 'none'
+        puts 'warning: given block not used'
         for i in 0...(self.length)
-          puts "iteration number #{self[i]}" 
-          puts "It's definitely taking this index: #{r}"
-          if r == self[i]
+          if compare == self[i]
             count += 1
-            puts "It's counting #{count}"
           end 
         end
-      elsif self.is_a? String
+      else
         for i in 0...(self.length)
-          if r == self[i]
+          if yield(self[i])
             count += 1
-            puts "It's counting #{count}"
-          end
-        end  
+          end 
+        end
       end
-      puts count 
+      
+    puts count
   end #Seventh method ends here
-
 end
 
-
-ma_string.my_count("e")
+other_array.my_count() {|i| i.length > 3}
