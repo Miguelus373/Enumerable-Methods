@@ -71,17 +71,26 @@ module Enumerable
   def my_all?(arg = nil)
     return true if self.length == 0
 
-    if !block_given? && arg.nil?
+    if arg.nil? and !block_given?
       (0...(length)).each do |i|
         return false if self[i].nil? or self[i] == false
       end
-    elsif !block_given? and arg.is_a? Class
+    elsif arg.is_a? Class
       (0...(length)).each do |i|
         return false if !self[i].is_a? arg 
       end
-    elsif !block_given? and arg.is_a? Regexp
+    elsif arg.is_a? Regexp
       (0...(length)).each do |i|
         return false if !self[i].match(arg)
+      end
+    elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
+      (0...(length)).each do |i|
+        return false if self[i] != arg
+      end
+    else 
+      (0...(length)).each do |i|
+        puts "it entered here"
+        return false if !yield(self[i])
       end
     end
     true
@@ -175,16 +184,17 @@ module Enumerable
   #   end
 
   # 9th method
-  def my_inject(num = 'none')
-    if num == 'none'
-      injection = self[0]
-      (1...length).each do |i|
-        injection = yield(injection, self[i])
+  def my_inject(num = nil)
+    to_array =  Array(self)
+    if num.nil?
+      injection = to_array[0]
+      (1...to_array.length).each do |i|
+        injection = yield(injection, to_array[i])
       end
     else
       injection = num
-      (0...length).each do |i|
-        injection = yield(injection, self[i])
+      (0...to_array.length).each do |i|
+        injection = yield(injection, to_array[i])
       end
     end
     injection
