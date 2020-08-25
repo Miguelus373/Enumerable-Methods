@@ -46,9 +46,10 @@ module Enumerable
   def my_select
     if block_given?
       new_arr = []
-      if is_a? Array
-        (0...(length)).each do |i|
-          item = self[i]
+      if is_a? Array or is_a? Range
+        to_array = Array(self)
+        (0...(to_array.length)).each do |i|
+          item = to_array[i]
           new_arr.push(item) if yield(item)
         end
         new_arr
@@ -67,18 +68,20 @@ module Enumerable
   end
 
   # 4th method
-  def my_all?
-    return true unless block_given?
+  def my_all?(arg = nil)
+    return true if self.length == 0
 
-    if is_a? Array
+    if !block_given? && arg.nil?
       (0...(length)).each do |i|
-        return false unless yield(self[i])
+        return false if self[i].nil? or self[i] == false
       end
-    else
-      key = keys
-      value = values
+    elsif !block_given? and arg.is_a? Class
       (0...(length)).each do |i|
-        return false unless yield(key[i], value[i])
+        return false if !self[i].is_a? arg 
+      end
+    elsif !block_given? and arg.is_a? Regexp
+      (0...(length)).each do |i|
+        return false if !self[i].match(arg)
       end
     end
     true
@@ -123,22 +126,26 @@ module Enumerable
   end
 
   # 7th method
-  def my_count(compare = 'none')
-    return puts length if !block_given? && compare == 'none'
+  def my_count(compare = nil)
+    to_array = Array(self)
+    return puts to_array.length if !block_given? && compare.nil?
 
     count = 0
 
-    if compare == 'none'
-      (0...(length)).each do |i|
-        count += 1 if yield(self[i])
+    if compare.nil?
+      (0...(to_array.length)).each do |i|
+        count += 1 if yield(to_array[i])
+      end
+    elsif block_given? && !compare.nil?
+      puts 'warning: given block not used'
+      (0...(to_array.length)).each do |i|
+        count += 1 if compare == to_array[i]
       end
     else
-      puts 'warning: given block not used'
-      (0...(length)).each do |i|
-        count += 1 if compare == self[i]
+      (0...(to_array.length)).each do |i|
+        count += 1 if compare == to_array[i]
       end
     end
-
     count
   end
 
@@ -208,14 +215,15 @@ module Enumerable
   #   end
 
   # my_map modified for Proc or block
-  def my_map(par = 'none')
-    if par == 'none' && !block_given?
+  def my_map(par = nil)
+    if par.nil? && !block_given?
       puts "Enumerator #{self}:my_map"
-    elsif par == 'none'
+    elsif par.nil?
       new_arr = []
-      if is_a? Array
-        (0...(length)).each do |i|
-          new_arr.push(yield(self[i]))
+      if is_a? Array or is_a? Range
+        to_array = Array(self)
+        (0...(to_array.length)).each do |i|
+          new_arr.push(yield(to_array[i]))
         end
       elsif is_a? Hash
         key = keys
