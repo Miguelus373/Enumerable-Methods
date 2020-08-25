@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength
+
 module Enumerable
   # 1st method
   def my_each
@@ -67,6 +69,7 @@ module Enumerable
     if is_a? Array
       (0...(length)).each do |i|
         return false unless yield(self[i])
+
         true
       end
     else
@@ -74,6 +77,7 @@ module Enumerable
       value = values
       (0...(length)).each do |i|
         return false unless yield(key[i], value[i])
+
         true
       end
     end
@@ -238,8 +242,4 @@ module Enumerable
   end
 end
 
-module Enumerable_for_mods
-
-end
-
-# rubocop:enable Style/CaseEquality
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength
