@@ -1,10 +1,3 @@
-# rubocop:disable Style/CaseEquality
-  array = [1.0, 2, 3, 4, 5, 6, 7, 8, 9]
-# hash = { one: 1, two: 2, three: 3 }
-# other_array = %w[Testing how this array thing works Happiness how how how how how]
-# other_hash = { desperation: 1, testing: 2, achieving: 3, figuring_out: 4 }
-# ma_string = 'somethig different'
-
 module Enumerable
   # 1st method
   def my_each
@@ -69,25 +62,20 @@ module Enumerable
 
   # 4th method
   def my_all?
-    if block_given?
-      case has_a_block
-        when is_a? Array
-          (0...(length)).each do |i|
-            return false unless yield(self[i])
-          true
-          end
-        end
-        when is_a? Hash
-          key = keys
-          value = values
-          (0...(length)).each do |i|
-            return false unless yield(key[i], value[i])
-          true
-          end
-        end
+    return true unless block_given?
+
+    if is_a? Array
+      (0...(length)).each do |i|
+        return false unless yield(self[i])
+        true
       end
     else
-    true
+      key = keys
+      value = values
+      (0...(length)).each do |i|
+        return false unless yield(key[i], value[i])
+        true
+      end
     end
   end
 
@@ -254,14 +242,4 @@ module Enumerable_for_mods
 
 end
 
-# array.my_each
-# array.my_each_with_index
-# array.my_select
-p array.my_all?
-# p array.my_any?
-# p array.my_none?
-# array.my_count
-# array.my_inject
-# array.my_map
-# array.inject
 # rubocop:enable Style/CaseEquality
