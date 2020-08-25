@@ -4,9 +4,10 @@ module Enumerable
   # 1st method
   def my_each
     if block_given?
-      if is_a? Array
-        (0...(length)).each do |i|
-          yield(self[i])
+      if is_a? Array or is_a? Range
+        to_array = Array(self)
+        (0...(to_array.length)).each do |i|
+          yield(to_array[i])
         end
       else
         (0...(length)).each do |i|
@@ -14,6 +15,7 @@ module Enumerable
           yield(hash[i])
         end
       end
+      return self
     else
       puts "Enumerator #{self}:my_each"
     end
@@ -22,9 +24,10 @@ module Enumerable
   # 2nd Method
   def my_each_with_index
     if block_given?
-      if is_a? Array
-        (0...(length)).each do |j|
-          i = self[j]
+      if is_a? Array or is_a? Range
+        to_array = Array(self)
+        (0...(to_array.length)).each do |j|
+          i = to_array[j]
           yield(i, j)
         end
       else
@@ -33,6 +36,7 @@ module Enumerable
           yield(hash[j], j)
         end
       end
+      return self
     else
       puts "Enumerator #{self}:my_each_with_index"
     end
