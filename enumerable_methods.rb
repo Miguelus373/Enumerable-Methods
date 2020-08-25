@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength
+# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength,Metrics/MethodLength
 
 module Enumerable
   # 1st method
@@ -69,18 +69,15 @@ module Enumerable
     if is_a? Array
       (0...(length)).each do |i|
         return false unless yield(self[i])
-
-        true
       end
     else
       key = keys
       value = values
       (0...(length)).each do |i|
         return false unless yield(key[i], value[i])
-
-        true
       end
     end
+    true
   end
 
   # 5th method
@@ -140,10 +137,11 @@ module Enumerable
 
     count
   end
-  # 7th method ends here
+
+  # This code was left as a comment on purpose
+  # so you can see the progression of the my_map method
 
   # 8th method
-
   #   def my_map
   #     unless block_given?
   #       return puts 'Enumerator #{self}:my_map'
@@ -172,22 +170,22 @@ module Enumerable
       (1...length).each do |i|
         injection = yield(injection, self[i])
       end
-      injection
     else
       injection = num
       (0...length).each do |i|
         injection = yield(injection, self[i])
       end
-      injection
     end
+    injection
   end
-  # 9th method ends here
 
   # 10th method
   def multiply_els
     my_inject { |i, j| i * j }
   end
-  # 10th method ends here
+
+  # This code was left as a comment on purpose
+  # so you can see the progression of the my_map method
 
   #   def my_map(parameter) #my_map modified for Proc
   #       new_arr = []
@@ -242,4 +240,4 @@ module Enumerable
   end
 end
 
-# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength,Metrics/MethodLength
