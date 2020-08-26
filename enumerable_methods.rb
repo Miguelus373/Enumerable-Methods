@@ -69,28 +69,30 @@ module Enumerable
 
   # 4th method
   def my_all?(arg = nil)
-    return true if empty?
+    return false if self.end.nil? or self.begin.nil?
+    to_array = Array(self)
+    return true if to_array.empty?
 
     if arg.nil? and !block_given?
-      (0...(length)).each do |i|
-        return false if self[i].nil? or self[i] == false
+      (0...(to_array.length)).each do |i|
+        return false if to_array[i].nil? or to_array[i] == false
       end
     elsif arg.is_a? Class
-      (0...(length)).each do |i|
-        return false unless self[i].is_a? arg
+      (0...(to_array.length)).each do |i|
+        return false unless to_array[i].is_a? arg
       end
     elsif arg.is_a? Regexp
-      (0...(length)).each do |i|
-        return false unless self[i].match(arg)
+      (0...(to_array.length)).each do |i|
+        return false unless to_array[i].match(arg)
       end
     elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
-      (0...(length)).each do |i|
-        return false if self[i] != arg
+      (0...(to_array.length)).each do |i|
+        return false if to_array[i] != arg
       end
     else
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         puts 'it entered here'
-        return false unless yield(self[i])
+        return false unless yield(to_array[i])
       end
     end
     true
