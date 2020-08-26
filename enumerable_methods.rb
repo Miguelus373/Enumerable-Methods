@@ -185,12 +185,32 @@ module Enumerable
 
   # 9th method
   def my_inject(num = nil)
-    to_array =  Array(self)
+
+    to_array = Array(self)
+    injection = to_array[0]
     if num.nil?
-      injection = to_array[0]
       (1...to_array.length).each do |i|
         injection = yield(injection, to_array[i])
       end
+    elsif num.is_a? Symbol
+      case num
+      when :+
+        (1...to_array.length).each do |i|
+          puts injection += to_array[i]
+        end
+      when :-
+        (1...to_array.length).each do |i|
+          puts injection -= to_array[i]
+        end
+      when :*
+        (1...to_array.length).each do |i|
+          puts injection *= to_array[i]
+        end
+      when :/
+        (1...to_array.length).each do |i|
+          puts injection /= to_array[i]
+        end
+      end 
     else
       injection = num
       (0...to_array.length).each do |i|
