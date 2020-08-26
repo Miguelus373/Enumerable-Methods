@@ -213,41 +213,21 @@ module Enumerable
         injection = yield(injection, to_array[i])
       end
     elsif num.is_a? Symbol and !block_given?
-      case num
-      when :+
-        (1...to_array.length).each do |i|
-          injection += to_array[i]
-        end
-      when :-
-        (1...to_array.length).each do |i|
-          injection -= to_array[i]
-        end
-      when :*
-        (1...to_array.length).each do |i|
-          injection *= to_array[i]
-        end
-      when :/
-        (1...to_array.length).each do |i|
-          injection /= to_array[i]
+      (1...to_array.length).each do |i|
+        case num
+        when :+ then injection += to_array[i]
+        when :- then injection -= to_array[i]
+        when :* then injection *= to_array[i]
+        when :/ then injection /= to_array[i]
         end
       end
     elsif arg.is_a? Symbol and !block_given?
-      case arg
-      when :+
-        (1...to_array.length).each do |i|
-          injection += to_array[i]
-        end
-      when :-
-        (1...to_array.length).each do |i|
-          injection -= to_array[i]
-        end
-      when :*
-        (1...to_array.length).each do |i|
-          injection *= to_array[i]
-        end
-      when :/
-        (1...to_array.length).each do |i|
-          injection /= to_array[i]
+      (1...to_array.length).each do |i|
+        case arg
+        when :+ then injection += to_array[i]
+        when :- then injection -= to_array[i]
+        when :* then injection *= to_array[i]
+        when :/ then injection /= to_array[i]
         end
       end
     else
