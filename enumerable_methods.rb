@@ -17,7 +17,7 @@ module Enumerable
       end
       self
     else
-      puts "Enumerator #{self}:my_each"
+      return to_enum(:my_each)
     end
   end
 
@@ -38,7 +38,7 @@ module Enumerable
       end
       self
     else
-      puts "Enumerator #{self}:my_each_with_index"
+      return to_enum(:my_each_with_index)
     end
   end
 
@@ -63,7 +63,7 @@ module Enumerable
         new_hash
       end
     else
-      puts "Enumerator #{self}:my_select"
+      return to_enum(:my_select)
     end
   end
 
@@ -97,7 +97,6 @@ module Enumerable
   end
 
   # 5th method
-
   def my_any?(arg = nil)
     return false if empty?
 
@@ -177,31 +176,6 @@ module Enumerable
     count
   end
 
-  # This code was left as a comment on purpose
-  # so you can see the progression of the my_map method
-
-  # 8th method
-  #   def my_map
-  #     unless block_given?
-  #       return puts 'Enumerator #{self}:my_map'
-  #     else
-  #       new_arr = []
-  #       if self.is_a? Array
-  #         for i in 0...(self.length)
-  #             new_arr.push(yield(self[i]))
-  #         end
-  #       elsif self.is_a? Hash
-  #         key = self.keys
-  #         value = self.values
-  #         for i in 0...(self.length)
-  #           yield(key[i], value[i])
-  #           new_arr.push(yield(key[i], value[i]))
-  #         end
-  #       end
-  #       new_arr
-  #      end
-  #   end
-
   # 9th method
   def my_inject(arg = nil, num = nil)
     to_array = Array(self)
@@ -240,30 +214,9 @@ module Enumerable
   end
 
   # 10th method
-
-  # This code was left as a comment on purpose
-  # so you can see the progression of the my_map method
-
-  #   def my_map(parameter) #my_map modified for Proc
-  #       new_arr = []
-  #       if self.is_a? Array
-  #         for i in 0...(self.length)
-  #           new_arr.push(parameter[self[i]])
-  #         end
-  #       elsif self.is_a? Hash
-  #         key = self.keys
-  #         value = self.values
-  #         for i in 0...(self.length)
-  #           new_arr.push(parameter[key[i], value[i]])
-  #         end
-  #       end
-  #       new_arr
-  #   end
-
-  # my_map modified for Proc or block
   def my_map(par = nil)
     if par.nil? && !block_given?
-      puts "Enumerator #{self}:my_map"
+      return to_enum(:my_map)
     elsif par.nil?
       new_arr = []
       if is_a? Array or is_a? Range
