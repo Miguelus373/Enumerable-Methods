@@ -184,15 +184,18 @@ module Enumerable
   #   end
 
   # 9th method
-  def my_inject(num = nil)
+  def my_inject(arg = nil, num = nil)
 
     to_array = Array(self)
+    to_array.unshift(arg) unless arg.nil?
     injection = to_array[0]
-    if num.nil?
+    if num.nil? and block_given?
       (1...to_array.length).each do |i|
         injection = yield(injection, to_array[i])
       end
-    elsif num.is_a? Symbol
+    elsif num.is_a? Symbol or !block_given?
+      arg = arg.to_sym
+      puts "arg #{arg} #{arg.class}"
       case num
       when :+
         (1...to_array.length).each do |i|
@@ -204,6 +207,7 @@ module Enumerable
         end
       when :*
         (1...to_array.length).each do |i|
+          puts "injection #{injection}"
           puts injection *= to_array[i]
         end
       when :/
