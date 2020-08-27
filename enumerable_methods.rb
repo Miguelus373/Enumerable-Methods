@@ -3,43 +3,39 @@
 module Enumerable
   # 1st method
   def my_each
-    if block_given?
-      if is_a? Array or is_a? Range
-        to_array = Array(self)
-        (0...(to_array.length)).each do |i|
-          yield(to_array[i])
-        end
-      else
-        (0...(length)).each do |i|
-          hash = to_a
-          yield(hash[i])
-        end
+    return to_enum(:my_each) unless block_given?
+
+    if is_a? Array or is_a? Range
+      to_array = Array(self)
+      (0...(to_array.length)).each do |i|
+        yield(to_array[i])
       end
-      self
     else
-      return to_enum(:my_each)
+      (0...(length)).each do |i|
+        hash = to_a
+        yield(hash[i])
+      end
     end
+    self
   end
 
   # 2nd Method
   def my_each_with_index
-    if block_given?
-      if is_a? Array or is_a? Range
-        to_array = Array(self)
-        (0...(to_array.length)).each do |j|
-          i = to_array[j]
-          yield(i, j)
-        end
-      else
-        (0...(length)).each do |j|
-          hash = to_a
-          yield(hash[j], j)
-        end
+    return to_enum(:my_each_with_index) unless block_given?
+
+    if is_a? Array or is_a? Range
+      to_array = Array(self)
+      (0...(to_array.length)).each do |j|
+        i = to_array[j]
+        yield(i, j)
       end
-      self
     else
-      return to_enum(:my_each_with_index)
+      (0...(length)).each do |j|
+        hash = to_a
+        yield(hash[j], j)
+      end
     end
+    self
   end
 
   # 3rd method
@@ -63,13 +59,15 @@ module Enumerable
         new_hash
       end
     else
-      return to_enum(:my_select)
+      to_enum(:my_select)
     end
   end
 
   # 4th method
   def my_all?(arg = nil)
-    return false if self.end.nil? or self.begin.nil?
+    if is_a? Range
+      return false if self.end.nil? or self.begin.nil?
+    end
     to_array = Array(self)
     return true if to_array.empty?
 
@@ -91,7 +89,6 @@ module Enumerable
       end
     else
       (0...(to_array.length)).each do |i|
-        puts 'it entered here'
         return false unless yield(to_array[i])
       end
     end
@@ -100,26 +97,30 @@ module Enumerable
 
   # 5th method
   def my_any?(arg = nil)
-    return false if empty?
+    if is_a? Range
+      return false if self.end.nil? or self.begin.nil?
+    end
+    to_array = Array(self)
+    return false if to_array.empty?
 
     if arg.nil? and !block_given?
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return true if self[i] == true
       end
     elsif arg.is_a? Class
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return true if self[i].is_a? arg
       end
     elsif arg.is_a? Regexp
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return true if self[i].match(arg)
       end
     elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return true if self[i] == arg
       end
     else
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return true if yield(self[i])
       end
     end
@@ -128,26 +129,30 @@ module Enumerable
 
   # 6th method
   def my_none?(arg = nil)
-    return true if empty?
+    if is_a? Range
+      return false if !self.end.nil? or !self.begin.nil?
+    end
+    to_array = Array(self)
+    return true if to_array.empty?
 
     if arg.nil? and !block_given?
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return false if self[i] == true
       end
     elsif arg.is_a? Class
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return false if self[i].is_a? arg
       end
     elsif arg.is_a? Regexp
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return false if self[i].match(arg)
       end
     elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return false unless self[i] != arg
       end
     else
-      (0...(length)).each do |i|
+      (0...(to_array.length)).each do |i|
         return false if yield(self[i])
       end
     end
@@ -218,7 +223,7 @@ module Enumerable
   # 10th method
   def my_map(par = nil)
     if par.nil? && !block_given?
-      return to_enum(:my_map)
+      to_enum(:my_map)
     elsif par.nil?
       new_arr = []
       if is_a? Array or is_a? Range
