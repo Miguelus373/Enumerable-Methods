@@ -161,8 +161,10 @@ module Enumerable
 
   # 7th method
   def my_count(compare = nil)
+    return 1 / 0.0 if is_a? Range and (self.begin.nil? or self.end.nil?)
+
     to_array = Array(self)
-    return puts to_array.length if !block_given? && compare.nil?
+    return to_array.length if !block_given? && compare.nil?
 
     count = 0
 
