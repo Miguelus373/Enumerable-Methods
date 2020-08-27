@@ -105,23 +105,23 @@ module Enumerable
 
     if arg.nil? and !block_given?
       (0...(to_array.length)).each do |i|
-        return true if self[i] == true
+        return true if to_array[i]
       end
     elsif arg.is_a? Class
       (0...(to_array.length)).each do |i|
-        return true if self[i].is_a? arg
+        return true if to_array[i].is_a? arg
       end
     elsif arg.is_a? Regexp
       (0...(to_array.length)).each do |i|
-        return true if self[i].match(arg)
+        return true if to_array[i].match(arg)
       end
     elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
       (0...(to_array.length)).each do |i|
-        return true if self[i] == arg
+        return true if to_array[i] == arg
       end
     else
       (0...(to_array.length)).each do |i|
-        return true if yield(self[i])
+        return true if yield(to_array[i])
       end
     end
     false
@@ -130,30 +130,30 @@ module Enumerable
   # 6th method
   def my_none?(arg = nil)
     if is_a? Range
-      return false if !self.end.nil? or !self.begin.nil?
+      return false if self.end.nil? or self.begin.nil?
     end
     to_array = Array(self)
     return true if to_array.empty?
 
     if arg.nil? and !block_given?
       (0...(to_array.length)).each do |i|
-        return false if self[i] == true
+        return false if to_array[i]
       end
     elsif arg.is_a? Class
       (0...(to_array.length)).each do |i|
-        return false if self[i].is_a? arg
+        return false if to_array[i].is_a? arg
       end
     elsif arg.is_a? Regexp
       (0...(to_array.length)).each do |i|
-        return false if self[i].match(arg)
+        return false if to_array[i].match(arg)
       end
     elsif !arg.is_a? Regexp and !arg.is_a? Class and !block_given?
       (0...(to_array.length)).each do |i|
-        return false unless self[i] != arg
+        return false unless to_array[i] != arg
       end
     else
       (0...(to_array.length)).each do |i|
-        return false if yield(self[i])
+        return false if yield(to_array[i])
       end
     end
     true
