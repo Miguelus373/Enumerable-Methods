@@ -147,4 +147,48 @@ describe Enumerable do
       expect(test_array2.my_none?(/z/)).to be true
     end
   end
+
+  describe '#my_count' do
+    it 'returns the number of items in enum through enumeration' do
+      expect(test_array2.my_count).to eql(4)
+    end
+
+    it 'returns the number of items in enum through enumeration::range' do
+      expect((1..30).my_count).to eql(30)
+    end
+  end
+
+  describe '#my_map' do
+    it 'returns an array with the results of running a given block once for every element in enum::range' do
+      expect((1..7).my_map { |i| i * 4 }).to eql([4, 8, 12, 16, 20, 24, 28])
+    end
+
+    it 'returns an Enumerator if no block is given' do
+      expect(test_array.my_map).to be_an Enumerator
+    end
+  end
+
+  describe '#my_inject' do
+    it 'combines all elements applying the specified condition of the block' do
+      expect(test_array.my_inject { |i, j| i + j }).to eql 127
+    end
+
+    it 'combines all elements and the initial value applying the specified condition of the block' do
+      expect(test_array.my_inject(13) { |i, j| i + j }).to eql 140
+    end
+
+    it 'combines all elements using the symbol argument as a name method' do
+      expect((1..5).my_inject(:*)).to eql 120
+    end
+
+    it 'combines all elements and the initial value using the symbol argument as a name method' do
+      expect((5..10).my_inject(151_200, :/)).to eql 1
+    end
+  end
+
+  describe '#multiply_els' do
+    it 'returns the multiplication of all elements of an array argument' do
+      expect(multiply_els([3, 6, 9])).to eql 162
+    end
+  end
 end
