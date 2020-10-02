@@ -33,4 +33,24 @@ describe Enumerable do
       end.to output("[:name, \"John\"]\n[:last, \"Doe\"]\n").to_stdout
     end
   end
+
+  describe '#my_each_with_index' do
+    let(:arr) { [2, 3, 5] }
+    let(:hash) { { name: 'John', last: 'Doe' } }
+    it 'Returns each element and index of a given array or range' do
+      expect do
+        (arr).my_each_with_index { |x, i| print x, i} 
+      end.to output("203152").to_stdout
+    end
+
+    it 'Returns the Enumerator if no block given' do
+      expect(arr.my_each_with_index).to be_an Enumerator
+    end
+
+    it 'Returns an array of arrays containing each element of a hash and their indexes' do
+      expect do
+        (hash).my_each_with_index {|el, i| p el i}
+      end.to output("[:name, \"John\"]0\n[:last, \"Doe\"]1\n").to_stdout
+    end
+  end
 end
