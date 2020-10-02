@@ -111,12 +111,12 @@ describe Enumerable do
     end
   end
 
-  describe "#my_none?" do
-  let(:my_arr) { [11, 2, 3, 56] }
-  let(:str_arr) { %w[ant bear cat] }
+  describe '#my_none?' do
+    let(:my_arr) { [11, 2, 3, 56] }
+    let(:str_arr) { %w[ant bear cat] }
 
     it 'returns true if no elements are higher than 11' do
-      expect(my_arr.my_none? {|el| el > 11}).to eql(false)
+      expect(my_arr.my_none? { |el| el > 11 }).to eql(false)
     end
 
     it 'returns true if no elements in the array are string' do
@@ -128,39 +128,37 @@ describe Enumerable do
     end
   end
 
-  describe "#my_count" do
-  let(:my_arr) { [11, 2, 3, 56] }
+  describe '#my_count' do
+    let(:my_arr) { [11, 2, 3, 56] }
 
-  it 'returns the amount of elements that are bigger than 11' do
-    expect(my_arr.my_count {|el| el > 11}).to eql(1)
+    it 'returns the amount of elements that are bigger than 11' do
+      expect(my_arr.my_count { |el| el > 11 }).to eql(1)
+    end
+
+    it 'returns true if there are even elements in the array' do
+      expect(my_arr.count(&:even?)).to eql(2)
+    end
+
+    it 'returns true if there are odd elements in the array' do
+      expect(my_arr.count(&:odd?)).to eql(2)
+    end
   end
 
-  it 'returns true if there are even elements in the array' do
-    expect(my_arr.count {|el| el.even?}).to eql(2)
-  end
+  describe '#my_inject' do
+    it 'multiplies the elements of the range by the next one in the range' do
+      expect((5..10).my_inject(:*)).to eql(151_200)
+    end
 
-  it 'returns true if there are odd elements in the array' do
-    expect(my_arr.count {|el| el.odd?}).to eql(2)
-  end
-  end
+    it 'sums the elements of the range plus the next one in the range' do
+      expect((5..10).my_inject { |sum, el| sum + el }).to eql(45)
+    end
 
-  describe "#my_inject" do
+    it 'multiplies the elements of the range by the next one in the range and it multiplies the result by two' do
+      expect((5..10).my_inject(2, :*)).to eql(302_400)
+    end
 
-  it 'multiplies the elements of the range by the next one in the range' do
-    expect((5..10).my_inject(:*)).to eql(151_200)
-  end
-
-  it 'sums the elements of the range plus the next one in the range' do
-    expect((5..10).my_inject {|sum, el| sum + el}).to eql(45)
-  end
-
-  it 'multiplies the elements of the range by the next one in the range and it multiplies the result by two' do
-    expect((5..10).my_inject(2, :*)).to eql(302_400)
-  end
-
-  it 'multiplies the elements of the range by the next one in the range and it multiplies the result by three' do
-    expect((5..10).my_inject(3) {|sum, el| sum * el}).to eql(453_600)
-  end
+    it 'multiplies the elements of the range by the next one in the range and it multiplies the result by three' do
+      expect((5..10).my_inject(3) { |sum, el| sum * el }).to eql(453_600)
+    end
   end
 end
-

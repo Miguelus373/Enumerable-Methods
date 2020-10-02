@@ -26,12 +26,10 @@ You need to have an internet browser, no install and setup needed
 
 [Go to this live demo](https://repl.it/@Miguelus373/Enumerable-methods#main.rb)
 
-### Run tests
-
-Insert your desired blocks after calling the methods to test them
-
-
-
+### :memo: Test
+- Click on the console and type `gem install rspec` then press enter to begin the instalation process
+- run `rspec spec/file_name_spec.rb`
+- You can see the test files by clicking on the left panel spec/<board_spec.rb> or <player_spec.rb>
 
 ## Authors
 
