@@ -25,13 +25,13 @@ test_hash = { name: 'John', last: 'Doe' }
 # (1..5).my_each_with_index do |elem, index|
 #   puts "Element: #{elem}  | Index:  #{index}"
 # end
- test_hash.my_each_with_index do |elem, index|
-   puts "Element: #{elem}  | Index:  #{index}"
- end
- puts '- - - -'
+# test_hash.my_each_with_index do |elem, index|
+#   puts "Element: #{elem}  | Index:  #{index}"
+# end
+# puts '- - - -'
 
 # puts 'Test #my_select method'
-# var1 = (1..10).my_select { |i| (i % 3).zero? }
+#puts var1 = (1..10).my_select { |i| (i % 3).zero? }
 # print var1 #=> [3, 6, 9]
 # print "\n"
 # puts((1..10).my_select)
@@ -129,7 +129,7 @@ puts((5..10).my_inject(:*)) #=> 151200
 #puts((5..10).my_inject(2) { |sum, n| sum + n }) #=> 47
 #puts((5..10).my_inject(2) { |prod, n| prod * n }) #=> 302400
 #puts((5..10).my_inject(2, :*)) #=> 302400
-#puts((5..10).my_inject(1) { |product, n| product * n }) #=> 151200
+puts((5..10).my_inject(1) { |product, n| product * n }) #=> 151200
 #puts("Without argument: #{(5..10).my_inject}")
 puts
 puts "- - - -\n"
