@@ -268,4 +268,4 @@ end
 
 test_array1 = [11, 2, 3, 56]
 test_hash = { name: 'John', last: 'Doe' }
-p(test_hash.my_each { |x| print x }) # hash
+test_hash.each_with_index { |el, i| puts el, i }
