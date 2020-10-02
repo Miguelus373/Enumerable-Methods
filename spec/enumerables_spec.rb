@@ -49,8 +49,65 @@ describe Enumerable do
 
     it 'Returns an array of arrays containing each element of a hash and their indexes' do
       expect do
-        hash.my_each_with_index { |el, i| puts el,i }
+        hash.my_each_with_index { |el, i| puts el, i }
       end.to output("name\nJohn\n0\nlast\nDoe\n1\n").to_stdout
+    end
+  end
+
+  describe 'my_select' do
+    let(:my_arr) { [3, 6, 9, 5, 2] }
+    it 'Iterate the array and apply the instruction in the block' do
+      result = my_arr.my_select(&:even?)
+      expect(result).to eql([6, 2])
+    end
+
+    it 'Returns the Enumerator if no block given' do
+      expect(my_arr.my_select).to be_an Enumerator
+    end
+
+    it 'Return numbers divisible by 3' do
+      result = my_arr.my_select { |el| (el % 3).zero? }
+      expect(result).to eql([3, 6, 9])
+    end
+  end
+
+  describe '#my_all?' do
+    let(:my_arr) { [11, 2, 3, 56] }
+    let(:str_arr) { %w[ant bear cat] }
+    it 'Returns true if all the numbers are higher than 1' do
+      result = my_arr.my_all? { |el| el > 1 }
+      expect(result).to eql(true)
+    end
+
+    it 'Returns false if all the numbers are lower than 20' do
+      result = my_arr.my_all? { |el| el < 20 }
+      expect(result).to eql(false)
+    end
+
+    it 'Returns false if all the numbers are lower than 20' do
+      result = [1, 2, 3, 2i].my_all?(Numeric)
+      expect(result).to eql(true)
+    end
+
+    it 'Returns false if all the elements have a letter d' do
+      result = str_arr.my_all?(/d/)
+      expect(result).to eql(false)
+    end
+  end
+
+  describe '#my_any?' do
+    let(:my_arr) { [11, 2, 3, 56] }
+    let(:str_arr) { %w[ant bear cat] }
+    it 'returns true if any element is higher than 11' do
+      expect(my_arr.my_any? { |el| el > 11 }).to eql(true)
+    end
+
+    it 'Return false if any of them are String' do
+      expect(my_arr.my_any?(String)).to eql(false)
+    end
+
+    it 'Return true if any element has a letter r' do
+      expect(str_arr.any?(/r/)).to eql(true)
     end
   end
 end
