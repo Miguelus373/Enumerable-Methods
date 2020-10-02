@@ -265,3 +265,7 @@ def multiply_els(arr)
 end
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/ModuleLength
+
+test_array1 = [11, 2, 3, 56]
+test_hash = { name: 'John', last: 'Doe' }
+p(test_hash.my_each { |x| print x }) # hash
