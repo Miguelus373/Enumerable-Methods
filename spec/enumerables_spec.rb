@@ -15,6 +15,12 @@ describe Enumerable do
       end.to output("2\n3\n5\n").to_stdout
     end
 
+    it 'Returns true if the arr is not modified by the block' do
+      arr_clone = arr
+      arr.my_each { |el| el + 1 }
+      expect(arr).to eql(arr_clone)
+    end
+
     it 'When modify the elements of the iteration' do
       expect do
         arr.my_each { |el| p el + el }
@@ -43,6 +49,12 @@ describe Enumerable do
       end.to output('203152').to_stdout
     end
 
+    it 'Iterate the array and the original is not modified' do
+      arr_clone = arr
+      arr.my_each_with_index { |el, i| el + i }
+      expect(arr).to eql(arr_clone)
+    end
+
     it 'Returns the Enumerator if no block given' do
       expect(arr.my_each_with_index).to be_an Enumerator
     end
@@ -59,6 +71,12 @@ describe Enumerable do
     it 'Iterate the array and apply the instruction in the block' do
       result = my_arr.my_select(&:even?)
       expect(result).to eql([6, 2])
+    end
+
+    it 'Iterate the array and the original is not modified' do
+      arr_clone = my_arr
+      my_arr.my_select { |el| (el % 2).zero? }
+      expect(my_arr).to eql(arr_clone)
     end
 
     it 'Returns the Enumerator if no block given' do
@@ -84,6 +102,10 @@ describe Enumerable do
       expect(result).to eql(false)
     end
 
+    it 'When block is not give' do
+      expect([nil, true, 99].my_all?).to be false
+    end
+
     it 'Returns false if all the numbers are lower than 20' do
       result = [1, 2, 3, 2i].my_all?(Numeric)
       expect(result).to eql(true)
@@ -92,6 +114,10 @@ describe Enumerable do
     it 'Returns false if all the elements have a letter d' do
       result = str_arr.my_all?(/d/)
       expect(result).to eql(false)
+    end
+
+    it 'When using range' do
+      expect((5..10).my_all? { |el| el > 3 }).to be true
     end
   end
 
@@ -109,6 +135,15 @@ describe Enumerable do
     it 'Return true if any element has a letter r' do
       expect(str_arr.any?(/r/)).to eql(true)
     end
+
+    it 'When using range' do
+      expect((3..10).my_any? { |el| el > 10 }).to be false
+    end
+
+    it 'When using array with different type values' do
+      sym = 'sm'.to_sym
+      expect(['hi', 1, 2i, sym].my_any? { |el| el == :sm }).to be true
+    end
   end
 
   describe '#my_none?' do
@@ -125,6 +160,15 @@ describe Enumerable do
 
     it 'returns true if no elements in the array contain said letter' do
       expect(str_arr.my_none?(/q/)).to eql(true)
+    end
+
+    it 'When using array with different type values' do
+      sym = 'sm'.to_sym
+      expect([[], 1, 2i, sym].my_none? { |el| el == 'str' }).to be true
+    end
+
+    it 'when using a range' do
+      expect((1..4).my_none? { |i| i < 0 }).to be true
     end
   end
 
@@ -159,6 +203,14 @@ describe Enumerable do
 
     it 'multiplies the elements of the range by the next one in the range and it multiplies the result by three' do
       expect((5..10).my_inject(3) { |sum, el| sum * el }).to eql(453_600)
+    end
+  end
+
+  describe '#my_map' do
+    let(:arr) { [11, 2, 3, 56] }
+
+    it 'When block is not given' do
+      expect(arr.my_map).to be_a(Enumerable)
     end
   end
 end
