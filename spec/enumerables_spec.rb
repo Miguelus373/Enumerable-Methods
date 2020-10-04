@@ -11,25 +11,25 @@ describe Enumerable do
 
     it 'When print the elements of the iteration' do
       expect do
-        arr.each { |el| p el }
+        arr.my_each { |el| p el }
       end.to output("2\n3\n5\n").to_stdout
     end
 
     it 'When modify the elements of the iteration' do
       expect do
-        arr.each { |el| p el + el }
+        arr.my_each { |el| p el + el }
       end.to output("4\n6\n10\n").to_stdout
     end
 
     it 'When modify the elements of the iteration' do
       expect do
-        arr.each { |el| p el + el }
+        arr.my_each { |el| p el + el }
       end.to output("4\n6\n10\n").to_stdout
     end
 
     it 'When a hash is passed' do
       expect do
-        hash.each { |el| p el }
+        hash.my_each { |el| p el }
       end.to output("[:name, \"John\"]\n[:last, \"Doe\"]\n").to_stdout
     end
   end
