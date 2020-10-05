@@ -10,9 +10,7 @@ describe Enumerable do
     end
 
     it 'When print the elements of the iteration' do
-      expect do
-        arr.my_each { |el| p el }
-      end.to output("2\n3\n5\n").to_stdout
+      expect(arr.my_each { |el| el }).to eql([2, 3, 5])
     end
 
     it 'Returns true if the arr is not modified by the block' do
@@ -22,9 +20,9 @@ describe Enumerable do
     end
 
     it 'When modify the elements of the iteration' do
-      expect do
-        arr.my_each { |el| p el + el }
-      end.to output("4\n6\n10\n").to_stdout
+      new_arr = []
+      arr.my_each {|el| new_arr.push(el + el)}
+      expect(new_arr).to eql([4, 6, 10])
     end
 
     it 'When modify the elements of the iteration' do
