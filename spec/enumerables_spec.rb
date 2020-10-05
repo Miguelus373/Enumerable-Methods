@@ -21,7 +21,7 @@ describe Enumerable do
 
     it 'When modify the elements of the iteration' do
       new_arr = []
-      arr.my_each {|el| new_arr.push(el + el)}
+      arr.my_each { |el| new_arr.push(el + el) }
       expect(new_arr).to eql([4, 6, 10])
     end
 
@@ -211,17 +211,17 @@ describe Enumerable do
       expect(arr.my_map).to be_a(Enumerable)
     end
 
-    it 'Multiplies the elements of the array or range by itself and then returns the array with the multiplied results' do
+    it 'Multiplies the elements range by itself and then returns the range with the multiplied results' do
       expect((1..4).my_map { |el| el * el }).to eql([1, 4, 9, 16])
     end
 
     it 'Takes a range and creates an array containing the inserted element by the range\'s length' do
-      expect((1..4).my_map { 'test' }).to eql(["test", "test", "test", "test"])
+      expect((1..4).my_map { 'test' }).to eql(%w[test test test test])
     end
 
     it 'Evaluates if the array equals a previously passed array' do
       cloned_arr = arr
-      (arr).my_map { |el| el * el }
+      arr.my_map { |el| el * el }
       expect(arr).to eql(cloned_arr)
     end
 
