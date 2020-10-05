@@ -213,22 +213,31 @@ describe Enumerable do
       expect(arr.my_map).to be_a(Enumerable)
     end
 
-    it 'Multiplies the elements of the array or range by itself and then returns the array with the multiplied results' do
+    it 'Multiplies the elements of the range by itself and then returns the range with the multiplied results' do
       expect((1..4).my_map { |el| el * el }).to eql([1, 4, 9, 16])
     end
 
     it 'Takes a range and creates an array containing the inserted element by the range\'s length' do
-      expect((1..4).my_map { 'test' }).to eql(["test", "test", "test", "test"])
+      expect((1..4).my_map { 'test' }).to eql(%w[test test test test])
     end
 
     it 'Evaluates if the array equals a previously passed array' do
       cloned_arr = arr
-      (arr).my_map { |el| el * el }
+      arr.my_map { |el| el * el }
       expect(arr).to eql(cloned_arr)
     end
 
     it 'Returns an array with nil elements if the block is empty' do
       expect([1, 2, 3, 4].my_map {}).to eql([nil, nil, nil, nil])
+    end
+
+    it 'Returns an empty array when passing an empty array and block' do
+      expect([].my_map {}).to eql([])
+    end
+
+    it 'When pass a proc' do
+      my_proc = proc { |el| el + 1 }
+      expect(arr.my_map(&my_proc)).to eql([12, 3, 4, 57])
     end
   end
 end
